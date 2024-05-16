@@ -5,7 +5,8 @@
 \geometry{a4paper, margin=1in}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{tabularx} % Para formatar os autores de forma mais elegante
+\usepackage{tabularx} % Para formatar os autores
+\usepackage{minted} % Para formnatar código
 
 \title{
     \vspace{2in}
@@ -26,7 +27,7 @@ Daniel Oliveira Barbosa & Matrícula\\
 Diane Fenzi Goncalves & Matrícula\\
 Frederico Dolher Souza Baker & 2021031513\\
 Rubia Alice Moreira de Souza & Matrícula\\
-Victor Yuji Yano & Matrícula\\
+Victor Yuji Yano & 2022043337\\
 Wallace Eduardo Pereira & Matrícula\\
 \end{tabularx}\\[1in]
 }
@@ -48,29 +49,182 @@ Wallace Eduardo Pereira & Matrícula\\
 \setcounter{page}{1}
 
 \section{Introdução}
-Este relatório tem como objetivo apresentar os resultados do estudo sobre a linguagem de programação Lua, conforme solicitado no Trabalho Prático 1 da disciplina DCC024 - Linguagem de Programação, ministrada pelo professor Marcio Costa Santos. A linguagem Lua foi sorteada para nosso grupo, e neste documento, exploraremos seu histórico, características principais, análise de usabilidade, eficiência, pontos fortes e pontos fracos.
+
+Este relatório apresenta os resultados do estudo sobre a linguagem de programação Lua, conforme solicitado no Trabalho Prático 1 da disciplina DCC024 - Linguagem de Programação, ministrada pelo professor Marcio Costa Santos. A linguagem Lua foi sorteada para nosso grupo, e neste documento exploraremos seu histórico, características principais, usabilidade, eficiência, pontos fortes e fracos. Além disso, desenvolvemos dois códigos na linguagem: um de busca binária e um de multiplicação de matrizes, ambos disponíveis no GitHub. Também criamos um vídeo sobre a linguagem, cujo link está disponível neste relatório.
+
+Os links para os códigos no GitHub\cite{github-repo} e para o vídeo\cite{video-apresentacao} podem ser encontrados nas referências ao final do documento.
 
 \section{Histórico da Linguagem Lua}
-Aqui, oferecemos uma visão geral sobre o surgimento da Lua, seu desenvolvimento ao longo dos anos e como ela se posicionou no mundo da programação, destacando sua origem brasileira e sua importância no cenário global.
+A linguagem Lua foi concebida em 1993 por Roberto Ierusalimschy, Luiz Henrique de Figueiredo e Waldemar Celes, membros do Computer Graphics Technology Group na PUC-Rio. Na época, o Brasil enfrentava desafios econômicos significativos, e a criação de uma linguagem de programação inovadora no país foi um marco importante. A PUC-Rio, uma instituição de ensino superior de renome, desempenhou um papel crucial ao proporcionar o ambiente acadêmico necessário para o desenvolvimento de Lua.
+
+A princípio, a linguagem foi criada para ser usada em um projeto da Petrobrás. Devido à sua eficiência, clareza e facilidade de uso, passou a ser utilizada em várias aplicações da programação, como o desenvolvimento de jogos, controle de robôs, processamento textual, entre outros \cite{lua-wiki}.
+
+O uso da linguagem Lua entrou no mundo dos jogos com o lançamento de Grim Fandango em 1998. Descoberta por um funcionário da Lucas Arts através de um artigo na revista americana Dr Dobb's, Lua foi gradualmente adotada em projetos internos e logo se tornou uma escolha comum em videogames de sucesso como World of Warcraft, Angry Birds e Roblox, o que popularizou a linguagem. Sua versatilidade não se limitou apenas aos jogos, sendo também utilizada em programas como Photoshop e Lightroom. Vale ressaltar que Lua é uma das poucas linguagens criadas em um país em desenvolvimento a ser usada globalmente, o que rendeu a seus criadores uma medalha Pedro Ernesto, destacando sua contribuição significativa para a indústria tecnológica \cite{lua-puc}.
+
+Atualmente, Lua continua a ser amplamente utilizada e mantida. A versão mais recente, Lua 5.4, lançada em 2020, trouxe várias melhorias e novas funcionalidades, como coletores de lixo incrementais e constantes to-be-closed. A comunidade de desenvolvedores de Lua permanece ativa, contribuindo com bibliotecas e ferramentas, garantindo que a linguagem continue relevante e suportada para diversas aplicações modernas.
 
 \section{Características Básicas da Linguagem}
-Detalhamos as características fundamentais da Lua, abordando sua sintaxe, tipagem dinâmica, uso como linguagem de script, e sua extensibilidade, que tem sido um dos principais atrativos da linguagem.
+Lua é uma linguagem interpretada, o que significa que não são criados arquivos executáveis diretamente, mas suas instruções são executadas por meio de outros programas, conhecidos como interpretadores. Essa característica torna a Lua uma linguagem de extensão, pois ela geralmente é incorporada em outros programas que a utilizam. Essa flexibilidade permite que a Lua seja integrada de forma eficiente em uma variedade de aplicativos e ambientes de desenvolvimento.
+
+Ela também se caracteriza por ser do tipo dinâmico, atribuindo automaticamente um tipo a uma variável, como um número, um texto ou uma estrutura de dados. O gerenciamento de memória é automatizado, liberando o programador da preocupação com a alocação e desalocação de memória \cite{lua-edu}.
+
+Além das características mencionadas, Lua atrai programadores por várias outras vantagens. Reconhecida por sua robustez, é amplamente empregada em uma gama diversificada de aplicações industriais, sistemas embarcados e jogos. Sua velocidade e desempenho a tornam uma escolha comum em várias áreas. Lua é altamente portátil, compilando facilmente em diversas plataformas e dispositivos. Sua facilidade de incorporação em outras aplicações, com uma API simples e bem documentada, permite uma integração eficiente com outras linguagens. Além disso, sua poderosa e flexível natureza oferece meta-mecanismos para implementar construções, mantendo-se compacta em tamanho. E como se isso não bastasse, Lua é uma opção gratuita e de código aberto \cite{lua-official}.
+
+Lua possui uma sintaxe simples e clara, semelhante a outras linguagens de script como Python. A seguir, apresentamos algumas das estruturas básicas de Lua, incluindo controle de fluxo, definição de funções e declaração de variáveis.
+
+\subsection{Estruturas Básicas} 
+
+\subsubsection{Declaração de Variáveis e Tipos} 
+
+Em Lua, as variáveis são declaradas usando a palavra-chave `local`, que limita o escopo da variável ao bloco onde foi declarada, evitando interferências acidentais com outras partes do programa. Ademais, nota-se, como citado anteriormente, que não é necessário declarar os tipos das variáveis.
+
+\begin{minted}{Lua}
+local numero = 10
+local texto = "Olá, mundo"
+local tabela = {1, 2, 3}
+\end{minted}
+
+\subsubsection{Controle de Fluxo}
+O controle de fluxo em Lua inclui estruturas `if`, `for`, e `while`, que permitem a execução condicional e a repetição de blocos de código. 
+\\\\
+\noindent\textbf{Estrutura Condicional `if`}
+\\\\
+A estrutura `if` é usada para executar um bloco de código se uma condição for verdadeira. Ela pode incluir as palavras-chave `elseif` e `else` para tratar múltiplas condições:
+\begin{minted}{lua}
+local numero = 5
+
+if numero > 0 then
+    print("O número é positivo")
+elseif numero < 0 then
+    print("O número é negativo")
+else
+    print("O número é zero")
+end
+\end{minted}
+
+\begin{itemize}
+  \item[-] `if` inicia a condição.
+  \item[-] `then` indica o início do bloco de código a ser executado.
+  \item[-] `elseif` adiciona condições adicionais.
+  \item[-] `else` define o bloco a ser executado se nenhuma das condições anteriores for verdadeira.
+  \item[-] `end` finaliza a estrutura condicional.
+\end{itemize}
+
+\noindent\textbf{Laço `for`}
+\\\\
+O laço `for` em Lua é usado para repetir um bloco de código um número específico de vezes. Ele usa a palavra-chave `for`, seguida de um contador, a faixa de valores e a palavra-chave `do`:
+
+\begin{minted}{lua}
+for i = 1, 5 do
+    print(i)
+end
+\end{minted}
+
+\begin{itemize}
+  \item[-] `for` inicia o laço.
+  \item[-] `i` é o contador que varia de `1` a `5`.
+  \item[-] `do` indica o início do bloco de código a ser repetido.
+  \item[-] `end` finaliza o laço.
+\end{itemize}
+
+\noindent\textbf{Laço `while`}
+\\\\
+O laço `while` repete um bloco de código enquanto uma condição for verdadeira. Ele usa a palavra-chave `while`, seguida da condição e da palavra-chave `do`:
+
+\begin{minted}{lua}
+local contador = 1
+while contador <= 5 do
+    print(contador)
+    contador = contador + 1
+end
+\end{minted}
+
+\begin{itemize}
+  \item[-] `while` inicia o laço.
+  \item[-] `contador <= 5` é a condição a ser verificada.
+  \item[-] `do` indica o início do bloco de código a ser repetido.
+  \item[-] `end` finaliza o laço.
+\end{itemize}
+
+\subsubsection{Definição de Funções}
+
+Funções em Lua são definidas com a palavra-chave `function`, permitindo a criação de blocos reutilizáveis de código. Uma função pode receber parâmetros e retornar valores:
+
+\begin{minted}{lua}
+local function saudacao(nome)
+    return "Olá, " .. nome
+end
+
+print(saudacao("Mundo"))
+\end{minted}
+
+\begin{itemize}
+  \item[-] `function` inicia a definição da função.
+  \item[-] `saudacao(nome)` define o nome da função e seus parâmetros.
+  \item[-] `return` especifica o valor a ser retornado pela função.
+  \item[-] `end` finaliza a definição da função.
+\end{itemize}
+
+Lua é uma linguagem extensível, permitindo a criação de bibliotecas e módulos personalizados. A linguagem suporta programação funcional e orientada a objetos, embora não seja uma linguagem orientada a objetos pura. Além disso, Lua é leve e rápida, adequada para sistemas embarcados e aplicações onde o desempenho é crítico. 
+
+Nessa seção, detalhamos as características fundamentais de Lua, abordando sua sintaxe, tipagem dinâmica, uso como linguagem de script e sua extensibilidade, que tem sido um dos principais atrativos da linguagem.
 
 \section{Análise de Usabilidade e Eficiência}
-Nesta seção, avaliamos a Lua em termos de facilidade de aprendizado e uso, desempenho em execução, e como ela se compara com outras linguagens populares em termos de eficiência.
+Devido à simplicidade e flexibilidade da sintaxe, a linguagem Lua é acessível para programadores iniciantes e experientes. Ela é conhecida por sua eficiência e por ter uma das implementações mais rápidas entre as linguagens interpretadas. 
+
+\subsection{Facilidade de Aprendizado e Uso}
+Lua possui uma curva de aprendizado suave, graças à sua sintaxe simples e clara. Programadores iniciantes podem rapidamente se familiarizar com os conceitos básicos, enquanto programadores experientes podem se beneficiar da sua flexibilidade. A documentação oficial de Lua é abrangente e bem estruturada, proporcionando uma excelente referência para desenvolvedores de todos os níveis \cite{lua-edu}.
+
+\subsection{Desempenho em Execução}
+Lua é conhecida por sua alta eficiência e desempenho. A implementação padrão de Lua, chamada PUC-Rio Lua, é otimizada para velocidade e uso mínimo de memória. Em benchmarks, Lua frequentemente apresenta desempenho superior a outras linguagens interpretadas, como Python e Ruby. 
+
+Em uma comparação feita entre a linguagem Lua e Python em \cite{benchmarks-game}, observa-se que Lua supera Python em diversos casos em termos de tempo de execução. Lua também tende a consumir uma quantidade de memória similar ou menor que Python na maioria dos testes. No entanto, há cenários específicos em que Python apresenta desempenho superior ou equivalente, destacando a eficiência de ambas as linguagens em diferentes tipos de tarefas.
+
+\subsection{Extensibilidade e Integração}
+Lua é altamente extensível e pode ser integrada facilmente em sistemas maiores. Sua API em C bem documentada permite que Lua seja embutida em outras aplicações, proporcionando uma linguagem de script poderosa para extensões e personalizações. Exemplos notáveis de integração incluem o uso de Lua em engines de jogos e o sistema de automação doméstica NodeMCU.
+
+\subsection{Usabilidade em Diferentes Domínios}
+Lua é amplamente utilizada em diversos domínios devido à sua versatilidade:
+
+\begin{itemize}
+  \item[-] \textbf{Desenvolvimento de Jogos:} Lua é popular em engines de jogos devido à sua velocidade e facilidade de integração.
+  \item[-] \textbf{Sistemas Embarcados:} A eficiência de Lua em termos de uso de memória torna-a ideal para sistemas embarcados.
+  \item[-] \textbf{Automação e Scripting:} Lua é frequentemente usada em scripts de automação e para adicionar funcionalidades personalizadas em software existente.
+\end{itemize}
+
+Lua continua a ser uma escolha sólida para desenvolvedores que procuram uma linguagem leve, rápida e altamente extensível, adequada para uma ampla gama de aplicações.
+
 
 \section{Pontos Fortes e Fracos}
+Os pontos fortes da linguagem Lua são suas características planejadas desde sua concepção, guiados por princípios fundamentais da linguagem. Um exemplo é sua notável simplicidade, refletida em uma sintaxe clara e acessível, sendo frequentemente comparada com Python. Em termos de eficiência, Lua foi projetada para oferecer desempenho e utilização de recursos otimizados, tornando-se uma escolha ideal para uma variedade de aplicações. A portabilidade é outra característica proeminente, graças à sua API em C bem definida, que facilita a integração em projetos maiores. Além disso, Lua se destaca pela velocidade, resultado de uma implementação altamente otimizada pelos seus criadores.
+\cite{lua-edu}
+\par
+Por outro lado, um dos pontos desafiadores da Lua está diretamente ligado à sua menor popularidade em comparação com outras linguagens mais estabelecidas. Como resultado, a linguagem enfrenta a falta de uma comunidade de apoio robusta e uma ampla variedade de bibliotecas disponíveis para os desenvolvedores.
 Exploramos os principais aspectos que fazem da Lua uma escolha preferida para determinados projetos, incluindo sua portabilidade, leveza e flexibilidade.
 
-
 \section{Conclusão}
-Concluímos nosso relatório com uma síntese das descobertas sobre a linguagem Lua, refletindo sobre sua posição no panorama atual das linguagens de programação e suas potenciais aplicações futuras.
+Neste relatório, exploramos a linguagem de programação Lua, abordando seu histórico, características principais, usabilidade, eficiência e pontos fortes e fracos. Constatamos que Lua é uma linguagem leve, eficiente e altamente extensível, ideal para uma ampla gama de aplicações, incluindo desenvolvimento de jogos e sistemas embarcados. Sua sintaxe simples e clara facilita o aprendizado e o uso tanto por programadores iniciantes quanto experientes.
+
+Por outro lado, também ressaltamos os desafios relacionados à menor popularidade de Lua, resultando em uma comunidade de apoio e uma variedade de bibliotecas menos robustas em comparação com outras linguagens mais estabelecidas. No entanto, suas vantagens em termos de portabilidade, leveza e extensibilidade continuam a torná-la uma escolha atraente para muitos projetos.
+
+Em suma, Lua se destaca como uma linguagem poderosa e versátil, capaz de atender a diversas necessidades de programação, ao mesmo tempo em que oferece um desempenho eficiente e uma integração fácil em sistemas maiores.
 
 \begin{thebibliography}{9}
+
+\bibitem{github-repo} GitHub. \textit{Códigos de Busca Binária e Multiplicação de Matrizes em Lua}. Disponível em: \url{https://github.com/Rubia-Souza/UFMG-LP-Sailor-Moon}.
+
+\bibitem{video-apresentacao} YouTube. \textit{Vídeo de Apresentação sobre a Linguagem Lua}. Disponível em: \url{https://youtube.com/}.
 
 \bibitem{lua-official} Lua.org. \textit{The Official Website of the Lua Language}. Disponível em: \url{https://www.lua.org}. Acesso em: 30 de março de 2024.
 
 \bibitem{lua-wiki} Wikipedia. \textit{Lua (programming language)}. Disponível em: \url{https://en.wikipedia.org/wiki/Lua\_(programming\_language)}. Acesso em: 30 de março de 2024.
+
+\bibitem{lua-puc} Jornal PUC. \textit{Lua (Origem e História)}. Disponível em: \url{http://jornaldapuc.vrc.puc-rio.br/cgi/cgilua.exe/sys/start.htm?infoid=14419&sid=29}. Acesso em: 01 de Maio de 2024.
+
+\bibitem{lua-edu} Edu.gfc \textit{Lua (Características)}. Disponível em: \url{https://edu.gcfglobal.org/pt/conhecimentos-tecnologicos/lua-a-nova-linguagem-de-programacao/1/}. Acesso em: 14 de Maio de 2024.
+
+\bibitem{benchmarks-game} The Computer Language Benchmarks Game. \textit{Lua versus Python 3 fastest performance}. Disponível em: \url{https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/python3-lua.html}. Acesso em: 15 de Maio de 2024.
+
 
 \end{thebibliography}
 
